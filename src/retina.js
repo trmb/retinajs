@@ -5,7 +5,9 @@
   var config = {
     // Ensure Content-Type is an image before trying to load @2x image
     // https://github.com/imulus/retinajs/pull/45)
-    check_mime_type: true
+    check_mime_type: true,
+    size_with_css: true,
+    retina_class: 'retina'
   };
 
 
@@ -124,8 +126,17 @@
       if (! that.el.complete) {
         setTimeout(load, 5);
       } else {
-        that.el.setAttribute('width', that.el.offsetWidth);
-        that.el.setAttribute('height', that.el.offsetHeight);
+        if (config.size_with_css) {
+          var classes = that.el.className;
+          if (classes.length) {
+            that.el.className = classes + " " + config.retina_class;
+          } else {
+            that.el.className = config.retina_class;
+          }
+        } else {
+          that.el.setAttribute('width', that.el.offsetWidth);
+          that.el.setAttribute('height', that.el.offsetHeight);
+        }
         that.el.setAttribute('src', path);
       }
     }
@@ -140,4 +151,3 @@
   }
 
 })();
-
